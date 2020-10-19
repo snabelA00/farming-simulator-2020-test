@@ -1,9 +1,13 @@
 package com.company;
 
+
 public class Horse extends Animal {
 
-    public Horse(String name, String gender){
-        super(name, gender);
-        System.out.println(name + " " + gender);
+    static int animalPrice = 5000;
+
+    public Horse(String name, String gender, int health){
+        super(name, gender, health);
     }
+
+    public int getAnimalPrice(){ return Horse.animalPrice; }
 }

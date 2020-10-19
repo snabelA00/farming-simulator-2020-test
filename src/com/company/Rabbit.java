@@ -2,8 +2,11 @@ package com.company;
 
 public class Rabbit extends Animal {
 
-    public Rabbit(String name, String gender){
-        super(name, gender);
-        System.out.println(name + " " + gender);
+    static int animalPrice = 20;
+
+    public Rabbit(String name, String gender, int health){
+        super(name, gender, health);
     }
+
+    public int getAnimalPrice(){ return Rabbit.animalPrice; }
 }
