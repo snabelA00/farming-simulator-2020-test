@@ -14,13 +14,13 @@ public class Store {
         print("Sheep- " + Sheep.animalPrice + "€");
         print("Rabbit- " + Rabbit.animalPrice + "€");
         print("Chicken- " + Chicken.animalPrice + "€");
-        var animalToBuy = capitalize(scanner.nextLine().toLowerCase().trim());
+        var input = capitalize(scanner.nextLine().toLowerCase().trim());
         print("- Alrighty! Do you prefer a male or a female? ");
         var animalGenderToBuy = capitalize(scanner.nextLine().toLowerCase().trim());
-        print("- Name your new " + animalToBuy.toLowerCase() + ": ");
+        print("- Name your new " + input.toLowerCase() + ": ");
         String giveName = scanner.nextLine();
         int currentBalance = currentPlayer.getAccountBalance();
-        switch(animalToBuy) {
+        switch(input) {
             case "Horse" -> {
                 currentPlayer.addAnimal(new Horse(giveName, animalGenderToBuy, 100));
                 currentBalance = currentBalance - Horse.animalPrice;
@@ -61,28 +61,37 @@ public class Store {
             }
             case "Carrot" -> {
                 currentPlayer.addFood(new Carrot());
-                currentBalance = currentBalance - Chicken.animalPrice;
+                currentBalance = currentBalance - Carrot.foodPrice;
                 currentPlayer.setAccountBalance(currentBalance);
             }
             case "Seeds" -> {
                 currentPlayer.addFood(new Seeds());
-                currentBalance = currentBalance - Chicken.animalPrice;
+                currentBalance = currentBalance - Seeds.foodPrice;
                 currentPlayer.setAccountBalance(currentBalance);
             }
         }
     }
 
-    public void sellAnimals(){
-        print("- Howdy! Welcome to Joey's Store, write the name of the animal you would like to sell: ");
-        var animalToSell = capitalize(scanner.nextLine().toLowerCase().trim());
-        print("- Alrighty! You will get 100 dollars for the " + animalToSell.toLowerCase());
-        switch(animalToSell) {
-            //case "Horse" -> Horse(giveName, animalGenderToBuy);
-            //case "Sheep" -> Sheep(giveName, animalGenderToBuy);
-            //case "Rabbit" -> Rabbit(giveName, animalGenderToBuy);
-           // case "Cow" -> Cow(giveName, animalGenderToBuy);
-            //case "Chicken" -> Chicken(giveName, animalGenderToBuy);
+    public void sellAnimals(Player currentPlayer){
+        print("- Howdy! Welcome to Joey's Store, write the number of the animal you would like to sell: ");
+        var input = scanner.nextLine();
+
+        var index = 0;
+        try {
+            index = Integer.parseInt(input) - 1;
+            var action = index < currentPlayer.allAnimals.size() && index >= 0 ? "remove" : "";
+            var value = currentPlayer.allAnimals.get(index).getAnimalPrice();
+            if (action.equals("remove")) {
+                int currentBalance = currentPlayer.getAccountBalance();
+                currentPlayer.allAnimals.remove(index);
+                currentBalance = currentBalance + value;
+                currentPlayer.setAccountBalance(currentBalance);
+            }
         }
+        catch(Exception ignored){
+            }
+
+            //print("- Alrighty! You got" + currentPlayer.allAnimals.get(index) + "for the " + input.toLowerCase());
     }
 
     private static String capitalize(String str){
