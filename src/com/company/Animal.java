@@ -1,18 +1,23 @@
 package com.company;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public abstract class Animal {
 
+    protected String animalBreed;
     protected String name;
-    protected static String gender;
+    protected String gender;
     protected int health;
     public abstract int getAnimalPrice();
     protected Scanner scanner = new Scanner(System.in);
 
-    public Animal(String name, String gender, int healthPoints){
+    public Animal(String animalBreed, String name, String gender, int healthPoints){
+        this.animalBreed = animalBreed;
         this.name = name;
         this.gender = gender;
         this.health = healthPoints;
+
     }
 
     //getters
@@ -25,6 +30,32 @@ public abstract class Animal {
     }
     //setters
     public void setAnimalHealth(int x){ this.health = x;}
+
+    public static void animalHashmap(Animal animal, Player currentPLayer) {
+
+        String key = animal.animalBreed + animal.gender;
+        System.out.println(currentPLayer.hm2.get(key));
+        Integer j = currentPLayer.hm2.get(key);
+        if (currentPLayer.hm2.containsKey(key) && j != null){
+            currentPLayer.hm2.put(key, j + 1);
+        }else{
+            currentPLayer.hm2.put(key, 1);
+        }
+    }
+
+    public static void animalOccurrences(Player currentPlayer){
+        System.out.println(currentPlayer.getPlayerName());
+        for (Map.Entry val : currentPlayer.hm2.entrySet()) {
+            System.out.println("Element " + val.getKey() + " "
+                    + "occurs"
+                    + ": " + val.getValue());
+            // System.out.println(val + ": " + Collections.frequency(currentPlayer.allAnimals, val.getKey()));
+        }
+    }
+
+    public static void animalsMating(Player currentPlayer){
+        System.out.println("Animals mating method called");
+    }
 
     public static void checkAnimalHealth(Player currentPlayer){
         for (int i = 0; i < currentPlayer.allAnimals.size(); i++) {
