@@ -1,19 +1,20 @@
 package com.company;
+import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public abstract class Animal {
 
-    protected String animalBreed;
+    protected String animalSpecie;
     protected String name;
     protected String gender;
     protected int health;
     public abstract int getAnimalPrice();
-    protected Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
-    public Animal(String animalBreed, String name, String gender, int healthPoints){
-        this.animalBreed = animalBreed;
+    public Animal(String animalSpecie, String name, String gender, int healthPoints){
+        this.animalSpecie = animalSpecie;
         this.name = name;
         this.gender = gender;
         this.health = healthPoints;
@@ -31,20 +32,20 @@ public abstract class Animal {
     //setters
     public void setAnimalHealth(int x){ this.health = x;}
 
-    public static void animalHashmap(Animal animal, Player currentPLayer) {
-
-        String key = animal.animalBreed + animal.gender;
-        System.out.println(currentPLayer.hm2.get(key));
-        Integer j = currentPLayer.hm2.get(key);
-        if (currentPLayer.hm2.containsKey(key) && j != null){
-            currentPLayer.hm2.put(key, j + 1);
-        }else{
-            currentPLayer.hm2.put(key, 1);
+    public static void animalHashmap(Player currentPLayer) {
+        currentPLayer.hm2.clear();
+        for(Animal animal: currentPLayer.allAnimals) {
+            String key = animal.animalSpecie + animal.gender;
+            Integer j = currentPLayer.hm2.get(key);
+            if (currentPLayer.hm2.containsKey(key) && j != null) {
+                currentPLayer.hm2.put(key, j + 1);
+            } else {
+                currentPLayer.hm2.put(key, 1);
+            }
         }
     }
 
     public static void animalOccurrences(Player currentPlayer){
-        System.out.println(currentPlayer.getPlayerName());
         for (Map.Entry val : currentPlayer.hm2.entrySet()) {
             System.out.println("Element " + val.getKey() + " "
                     + "occurs"
@@ -54,17 +55,106 @@ public abstract class Animal {
     }
 
     public static void animalsMating(Player currentPlayer){
+        System.out.println(fiftyFifty());
         System.out.println("Animals mating method called");
+        if(currentPlayer.allAnimals.size() >= 2) {
+            Animal animalBorn = new Horse("blank", "ken", "Male", 100);
+            for (var animal : currentPlayer.allAnimals) {
+                var action = animal.animalSpecie;
+                switch (action) {
+                    case "Horse" -> {
+                        if (fiftyFifty() && currentPlayer.hm2.get(animal.animalSpecie + "Male") != null && currentPlayer.hm2.get(animal.animalSpecie + "Female") != null) {
+                            String randomGender;
+                            System.out.println("In horse swithc");
+                            if (fiftyFifty()){randomGender = "Male";
+                            } else {
+                                randomGender = "Female";
+                            }
+                            System.out.println("In horse swithc2");
+                            System.out.println("A new " + animal.animalSpecie + "was born! (" +  randomGender.toLowerCase() + ")");
+                            print("Name your new " + animal.animalSpecie.toLowerCase() + ":");
+                            String inputName = scanner.nextLine().trim();
+                            animalBorn = new Horse(animal.animalSpecie, inputName, randomGender, 100);
+                        }
+                    }
+                    case "Cow" -> {
+                        if (fiftyFifty() && currentPlayer.hm2.get(animal.animalSpecie + "Male") != null && currentPlayer.hm2.get(animal.animalSpecie + "Female") != null) {
+                            String randomGender;
+                            if (fiftyFifty()){randomGender = "Male";
+                            } else {
+                                randomGender = "Female";
+                            }
+                            System.out.println("A new " + animal.animalSpecie + "was born! (" +  randomGender.toLowerCase() + ")");
+                            print("Name your new " + animal.animalSpecie.toLowerCase() + ":");
+                            String inputName = scanner.nextLine().trim();
+                            animalBorn = new Cow(animal.animalSpecie, inputName, randomGender, 100);
+                        }
+                    }
+                    case "Sheep" -> {
+                        if (fiftyFifty() && currentPlayer.hm2.get(animal.animalSpecie + "Male") != null && currentPlayer.hm2.get(animal.animalSpecie + "Female") != null) {
+                            String randomGender;
+                            if (fiftyFifty()){randomGender = "Male";
+                            } else {
+                                randomGender = "Female";
+                            }
+                            System.out.println("A new " + animal.animalSpecie + "was born! (" +  randomGender.toLowerCase() + ")");
+                            print("Name your new " + animal.animalSpecie.toLowerCase() + ":");
+                            String inputName = scanner.nextLine().trim();
+                            animalBorn = new Sheep(animal.animalSpecie, inputName, randomGender, 100);
+                        }
+                    }
+                    case "Rabbit" -> {
+                        if (fiftyFifty() && currentPlayer.hm2.get(animal.animalSpecie + "Male") != null && currentPlayer.hm2.get(animal.animalSpecie + "Female") != null) {
+                            String randomGender;
+                            if (fiftyFifty()){randomGender = "Male";
+                            } else {
+                                randomGender = "Female";
+                            }
+                            System.out.println("A new " + animal.animalSpecie + "was born! (" +  randomGender.toLowerCase() + ")");
+                            print("Name your new " + animal.animalSpecie.toLowerCase() + ":");
+                            String inputName = scanner.nextLine().trim();
+                            animalBorn = new Rabbit(animal.animalSpecie, inputName, randomGender, 100);
+                        }
+                    }
+                    case "Chicken" -> {
+                        if (fiftyFifty() && currentPlayer.hm2.get(animal.animalSpecie + "Male") != null && currentPlayer.hm2.get(animal.animalSpecie + "Female") != null) {
+                            String randomGender;
+                            if (fiftyFifty()){randomGender = "Male";
+                            } else {
+                                randomGender = "Female";
+                            }
+                            System.out.println("A new " + animal.animalSpecie + "was born! (" +  randomGender.toLowerCase() + ")");
+                            print("Name your new " + animal.animalSpecie.toLowerCase() + ":");
+                            String inputName = scanner.nextLine().trim();
+                            animalBorn = new Chicken(animal.animalSpecie, inputName, randomGender, 100);
+                        }
+                    }
+                }
+            }
+            if(animalBorn.animalSpecie.equals("blank")){
+                return;
+            } else {
+                currentPlayer.addAnimal(animalBorn, currentPlayer);
+                animalHashmap(currentPlayer);
+            }
+        }
     }
 
     public static void checkAnimalHealth(Player currentPlayer){
+
+        List<Animal> foundDead = new ArrayList<Animal>();
+        foundDead.clear();
         for (int i = 0; i < currentPlayer.allAnimals.size(); i++) {
             if (currentPlayer.allAnimals.get(i).getAnimalHealth() <= 0) {
                 System.out.println(("- Your " + currentPlayer.allAnimals.get(i).getClass().getSimpleName().toLowerCase()
                         + " " + currentPlayer.allAnimals.get(i).getAnimalName() + " died..."));
-                currentPlayer.allAnimals.remove(i);
+                foundDead.add(currentPlayer.allAnimals.get(i));
+            } else {
+                break;
             }
         }
+        currentPlayer.allAnimals.removeAll(foundDead);
+        animalHashmap(currentPlayer);
     }
 
     public static void feedAnimal(Player currentPlayer){
@@ -134,6 +224,15 @@ public abstract class Animal {
             print("Your " + animalClass.toLowerCase() + " won't eat " + food.toLowerCase());
         }
         return returnVal;
+    }
+
+    private static final Random random = new Random();
+    public static boolean fiftyFifty() {
+        if (random.nextBoolean()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static String capitalize(String str){
