@@ -4,9 +4,9 @@ public class Rabbit extends Animal {
 
     static int animalPrice = 20;
 
-    public Rabbit(String name, String gender, int health){
-        super(name, gender, health);
+    public Rabbit(String animalBreed, String name, String gender, int health){
+        super(animalBreed, name, gender, health);
     }
 
-    public int getAnimalPrice(){ return Rabbit.animalPrice; }
+    public int getAnimalPrice(){ return animalPrice; }
 }
