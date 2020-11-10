@@ -90,6 +90,26 @@ public class Game {
                     Animal.animalsMating(currentPlayer);
                 }
             }
+            if(i == numberOfRounds){
+                int max = 0;
+                String winner = "";
+                for(Player player: Player.allPlayers){
+                    int animalPriceValue = 0;
+                    for(Animal animal: player.allAnimals){
+                        animalPriceValue = animalPriceValue + animal.getAnimalPrice();
+                    }
+                    player.setAccountBalance(player.getAccountBalance() + animalPriceValue);
+                    print( player.getPlayerName() + "\n---Balance: " + player.getAccountBalance() + "€---");
+                    if(player.getAccountBalance() > max){
+                        max = player.getAccountBalance();
+                        winner = player.getPlayerName();
+                    }
+                }
+                print(winner + " won!");
+
+
+                System.exit(0);
+            }
         }
     }
 
