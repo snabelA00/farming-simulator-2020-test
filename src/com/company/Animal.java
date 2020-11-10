@@ -56,7 +56,6 @@ public abstract class Animal {
 
     public static void animalsMating(Player currentPlayer){
         System.out.println(fiftyFifty());
-        System.out.println("Animals mating method called");
         if(currentPlayer.allAnimals.size() >= 2) {
             Animal animalBorn = new Horse("blank", "ken", "Male", 100);
             for (var animal : currentPlayer.allAnimals) {
@@ -65,13 +64,11 @@ public abstract class Animal {
                     case "Horse" -> {
                         if (fiftyFifty() && currentPlayer.hm2.get(animal.animalSpecie + "Male") != null && currentPlayer.hm2.get(animal.animalSpecie + "Female") != null) {
                             String randomGender;
-                            System.out.println("In horse swithc");
                             if (fiftyFifty()){randomGender = "Male";
                             } else {
                                 randomGender = "Female";
                             }
-                            System.out.println("In horse swithc2");
-                            System.out.println("A new " + animal.animalSpecie + "was born! (" +  randomGender.toLowerCase() + ")");
+                            System.out.println("A new " + animal.animalSpecie + " was born! (" +  randomGender.toLowerCase() + ")");
                             print("Name your new " + animal.animalSpecie.toLowerCase() + ":");
                             String inputName = scanner.nextLine().trim();
                             animalBorn = new Horse(animal.animalSpecie, inputName, randomGender, 100);
@@ -130,6 +127,7 @@ public abstract class Animal {
                         }
                     }
                 }
+                break;
             }
             if(animalBorn.animalSpecie.equals("blank")){
                 return;
@@ -163,6 +161,7 @@ public abstract class Animal {
         Game.showList(currentPlayer);
         int indexAnimal = 0;
         String food = "";
+        int amountOfFood = 0;
         boolean tryAgain = true;
         while (tryAgain) {
             try {
@@ -170,32 +169,58 @@ public abstract class Animal {
                 indexAnimal = Integer.valueOf(scanner.nextLine()) - 1;
                 var getAnimalClass = currentPlayer.allAnimals.get(indexAnimal).getClass().getSimpleName();
 
-                print("- what do you want do feed " + currentPlayer.allAnimals.get(indexAnimal).getAnimalName() + " with?");
+                print("- what do you want to feed " + currentPlayer.allAnimals.get(indexAnimal).getAnimalName() + " with?");
                 food = capitalize(scanner.nextLine().toLowerCase().trim());
                 boolean returnVal = pickyAnimals(getAnimalClass, food);
                 tryAgain = returnVal;
+
+                print("How many kilos do you want to feed it with? (1 kilo = +10hp)");
+                amountOfFood = Integer.valueOf(scanner.nextLine());
+                switch (food) {
+                    case "Hay" -> {
+                        if (amountOfFood > currentPlayer.hayFood.getAmountOfFood()) {
+                            tryAgain = true;
+                        }
+                    }
+                    case "Carrots" -> {
+                        if (amountOfFood > currentPlayer.carrotFood.getAmountOfFood()) {
+                            tryAgain = true;
+
+                        }
+                    }
+                    case "Seeds" -> {
+                        if (amountOfFood > currentPlayer.seedFood.getAmountOfFood()) {
+                            tryAgain = true;
+                        }
+                    }
+                }
             } catch (Exception error) {
                 print("Input isn't valid, try again!");
                 tryAgain = true;
             }
         }
-                switch (food) {
-                    case "Hay" -> currentPlayer.hayFood.setFoodAmount(currentPlayer.hayFood.getAmountOfFood() - 1);
-                    case "Carrots" -> currentPlayer.carrotFood.setFoodAmount(currentPlayer.carrotFood.getAmountOfFood() - 1);
-                    case "Seeds" -> currentPlayer.seedFood.setFoodAmount(currentPlayer.seedFood.getAmountOfFood() - 1);
-                }
+        switch (food) {
+            case "Hay" -> currentPlayer.hayFood.setFoodAmount(currentPlayer.hayFood.getAmountOfFood() - amountOfFood );
+            case "Carrots" -> currentPlayer.carrotFood.setFoodAmount(currentPlayer.carrotFood.getAmountOfFood() - amountOfFood);
+            case "Seeds" -> currentPlayer.seedFood.setFoodAmount(currentPlayer.seedFood.getAmountOfFood() - amountOfFood);
+        }
 
-                var pickedAnimal = currentPlayer.allAnimals.get(indexAnimal).getAnimalHealth();
-                pickedAnimal = pickedAnimal + 10;
-                currentPlayer.allAnimals.get(indexAnimal).setAnimalHealth(pickedAnimal);
-                print(currentPlayer.allAnimals.get(indexAnimal).getAnimalName() + " +10hp");
+        var pickedAnimal = currentPlayer.allAnimals.get(indexAnimal).getAnimalHealth();
+        pickedAnimal = pickedAnimal + (amountOfFood*10);
+        currentPlayer.allAnimals.get(indexAnimal).setAnimalHealth(pickedAnimal);
+        if(currentPlayer.allAnimals.get(indexAnimal).getAnimalHealth() > 100){
+            System.out.println("Over 100hp");
+            currentPlayer.allAnimals.get(indexAnimal).setAnimalHealth(100);
+        }
+        print(currentPlayer.allAnimals.get(indexAnimal).getAnimalName() + " +10hp");
 
-            }
+    }
 
 
     public static void reduceHealth(Player currentPLayer) {
         for (var eachAnimal : currentPLayer.allAnimals) {
-            int reduceHp = (int) (Math.random() * (50 - 30)) + 30;
+            int reduceHp = (int) (Math.random() * (30 - 10)) + 10;
+            System.out.println(eachAnimal.getAnimalName() + " -" + reduceHp + "hp");
             var index = currentPLayer.allAnimals.indexOf(eachAnimal);
             var getHp = currentPLayer.allAnimals.get(index).getAnimalHealth();
             var setHp = getHp - reduceHp;
